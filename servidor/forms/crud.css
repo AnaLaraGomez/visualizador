@@ -1,0 +1,132 @@
+
+th {
+    text-align: start;
+}
+
+tr td {
+    border-top: unset;
+    padding: 0.5em;
+    max-width: 8em;
+    max-height: 3em;
+    overflow: hidden;
+    height: 2em;
+}
+
+tr td input {
+    background-color: transparent;
+    border: unset;
+    max-width: 12em;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; 
+}
+
+tr:nth-child(even) { 
+    background-color: rgba(103, 166, 179,0.2); 
+}
+
+.tablas {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.botones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.edit-btn {
+    cursor: pointer;
+    background-image: url('http://localhost/visualizador/imagenes/edit.png');
+    background-position: center;
+    height: 18px;
+    
+    background-repeat: no-repeat;
+    background-color: inherit;
+    border: none;
+    padding-top: 18px;
+    background-size: 18px 18px;
+    color: #DF812A;
+}
+.delete-btn {
+    cursor: pointer;
+    background-image: url('http://localhost/visualizador/imagenes/delete.png');
+    background-position: top;
+    height: 18px;
+    background-repeat: no-repeat;
+    background-color: inherit;
+    border: none;
+    padding-top: 18px;
+    background-size: 18px 18px;
+    color: #CE0025;
+}
+
+.contenedor-crear-boton {
+    position: absolute;
+    top:1.25em;
+    right: 1.25em;
+}
+
+.boton-primario {
+    cursor: pointer;
+    background-color: rgba(103, 166, 179,0.2);
+    border: 2px solid rgba(103, 166, 179,0.2);
+    border-radius: 0.5em;
+    color: black;
+    padding: 0.75em;
+}
+
+.boton-secundario {
+    cursor: pointer;
+    border: 2px solid rgb(223, 129, 42);
+    background-color: white;
+    border-radius: 0.5em;
+    color: black;
+    padding: 0.75em;
+}
+
+
+.modal {
+    visibility: hidden;
+    position: absolute;
+    top:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal .modal-contenido {
+    background-color: white;
+    padding: 1em;
+    border-radius: 0.5em;
+    width: 75%;
+    min-height: 50%;
+}
+
+/* Inputs de formulario */
+
+input, textarea, select, datalist {
+    padding: 0.75em;
+    border: 1px solid rgba(103, 166, 179,0.2);
+    border-radius: 0.5em;
+}
+
+.conjunto {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+.conjunto label {
+    font-weight: bold;
+}
+
+.conjunto input {
+    width: 24em;
+}
