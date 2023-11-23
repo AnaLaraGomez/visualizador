@@ -41,13 +41,13 @@ $recursos = obtenerRecursos();
                     // Cada fila es un formulario, para permitir ediciones en campos especificos
                     foreach ($recursos as $recursoActual){
                     ?> 
-                    <tr>
+                    <tr id='tr-<?php echo $recursoActual->get_id(); ?>'>
                         <form id='editar-<?php echo $recursoActual->get_id(); ?>'>   
-                            <td><input name="recursoId" size="2" value='<?php echo $recursoActual->get_id(); ?>' readonly/></td>
-                            <td><input name="comienzo" size="5" value='<?php echo $recursoActual->get_comienzo(); ?>' type="datetime-local"/></td>
-                            <td><input name="finalizacion" value='<?php echo $recursoActual->get_finalizacion(); ?>' type="datetime-local"/></td>
-                            <td><input name="prioridad" min="1" max="3" style="width:2em;" value='<?php echo $recursoActual->get_prioridad(); ?>' type="number" /></td>
-                            <td><input name="duracion" style="width:3em;" value='<?php echo $recursoActual->get_duracion(); ?>' type="number" /></td>
+                            <td><input oninput="formularioEditado('tr-<?php echo $recursoActual->get_id(); ?>')" name="recursoId" size="2" value='<?php echo $recursoActual->get_id(); ?>' readonly/></td>
+                            <td><input oninput="formularioEditado('tr-<?php echo $recursoActual->get_id(); ?>')" name="comienzo" size="5" value='<?php echo $recursoActual->get_comienzo(); ?>' type="datetime-local"/></td>
+                            <td><input oninput="formularioEditado('tr-<?php echo $recursoActual->get_id(); ?>')" name="finalizacion" value='<?php echo $recursoActual->get_finalizacion(); ?>' type="datetime-local"/></td>
+                            <td><input oninput="formularioEditado('tr-<?php echo $recursoActual->get_id(); ?>')" name="prioridad" min="1" max="3" style="width:2em;" value='<?php echo $recursoActual->get_prioridad(); ?>' type="number" /></td>
+                            <td><input oninput="formularioEditado('tr-<?php echo $recursoActual->get_id(); ?>')" name="duracion" style="width:3em;" value='<?php echo $recursoActual->get_duracion(); ?>' type="number" /></td>
                             <td>
                                 <select name="perfil" class="selector">
                                     <option value="1" <?php echo 1 == $recursoActual->get_perfil() ? 'selected' : '' ?> >Profesor</option>
@@ -55,7 +55,7 @@ $recursos = obtenerRecursos();
                                     <option value="3" <?php echo 3 == $recursoActual->get_perfil() ? 'selected' : '' ?> >Todos</option>
                                 </select>
                             </td>
-                            <td><?php echo $recursoActual->get_contenido(); ?></td>
+                            <td><div class="contenido"><?php echo $recursoActual->get_contenido(); ?></div></td>
                             <td><?php echo $recursoActual->get_tipo(); ?></td>
                             <td><?php echo $recursoActual->get_formato(); ?></td>
                             <td class="botones">
@@ -81,7 +81,7 @@ $recursos = obtenerRecursos();
                 <p class="titulo">Crear Recurso</p>
                 <form id="crearRecurso">
 
-                    <div class="conjunto">
+                    <div class="conjunto" id="grupoComienzo">
                         <label>Comienzo</label>
                         <input 
                             type="datetime-local" 
@@ -90,7 +90,7 @@ $recursos = obtenerRecursos();
                             >
                     </div>
 
-                    <div class="conjunto">
+                    <div class="conjunto" id="grupoFinalizacion">
                         <label>Finalización</label>
                         <input 
                             type="datetime-local" 
@@ -99,7 +99,7 @@ $recursos = obtenerRecursos();
                             >
                     </div>
 
-                    <div class="conjunto">
+                    <div class="conjunto" id="grupoPrioridad">
                         <label>Prioridad</label>
                         <input 
                             type="number"
@@ -111,7 +111,7 @@ $recursos = obtenerRecursos();
                             >
                     </div>
 
-                    <div class="conjunto" >
+                    <div class="conjunto" id="grupoDuracion">
                         <label>Duracion en segundos</label>
                         <input 
                             type="number"
@@ -121,7 +121,7 @@ $recursos = obtenerRecursos();
                             >
                     </div>
 
-                    <div class="conjunto">
+                    <div class="conjunto" id="grupoPerfil">
                         <label>Perfil</label>
                         <select name="perfil" class="selector">
                             <option value="1">Profesor</option>
@@ -130,8 +130,8 @@ $recursos = obtenerRecursos();
                         </select>
                     </div>
 
-                    <div class="conjunto">
-                        <label>Contenido</label>
+                    <div class="conjunto" id="grupoTipo">
+                        <label>Tipo</label>
                         <select name="tipo" class="selector" onchange="seleccionarContenido(this.value)">
                             <option value="1">Web</option>
                             <option value="2">Imagen</option>

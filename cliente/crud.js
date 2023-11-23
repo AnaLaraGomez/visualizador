@@ -1,4 +1,6 @@
 function editar(formularioId) {
+    let rowId = 'tr-' + formularioId.split('-')[1];
+    limpiarFormularioEditado(rowId);
     let formularioAEnviar = document.getElementById(formularioId);
     let recursoEditado = convertirFormularioEnJson(formularioAEnviar);
     
@@ -34,7 +36,6 @@ function eliminar(recursoId) {
     });
 }
 
-
 function abrirModalCrearRecurso() {
     let crearRecursoModal = document.getElementById('crearRecursoModal');
     crearRecursoModal.style.visibility = 'visible';
@@ -57,8 +58,32 @@ function crearRecurso() {
     fetch(url, opciones)
     .then((respuesta) => respuesta.json())
     .then((respuestaEnJson) => {
+        limpiaErrores();
         if(respuestaEnJson.succeed) {
             location.reload();
+        } else {
+            
+        let grupoComienzo = document.getElementById("grupoComienzo");
+        crearError(grupoComienzo,respuestaEnJson['comienzo']);
+        let grupoFinalizacion = document.getElementById("grupoFinalizacion");
+        crearError(grupoFinalizacion,respuestaEnJson['finalizacion']);
+
+        let grupoPrioridad = document.getElementById("grupoPrioridad");
+        crearError(grupoPrioridad,respuestaEnJson['prioridad']);
+        let grupoDuracion = document.getElementById("grupoDuracion");
+        crearError(grupoDuracion,respuestaEnJson['duracion']);
+        let grupoPerfil = document.getElementById("grupoPerfil");
+        crearError(grupoPerfil,respuestaEnJson['perfil']);
+
+        let grupoTipo = document.getElementById("grupoTipo");
+        crearError(grupoTipo,respuestaEnJson['tipo']);
+
+        let grupoContenido = document.getElementById("contenido");
+        crearError(grupoContenido,respuestaEnJson['contenido']);
+
+        let grupoFormato = document.getElementById("formato");
+        crearError(grupoFormato,respuestaEnJson['formato']);
+
         }
     });
 }
@@ -88,7 +113,7 @@ function seleccionarContenido(tipoContenido) {
             formato.classList.remove('conjunto')
          
             fichero.style.display= 'flex';
-            fichero.classList.remove('conjunto')
+            fichero.classList.add('conjunto')
             break;
 
         case '3': // Video
@@ -105,9 +130,39 @@ function seleccionarContenido(tipoContenido) {
     }
 }
 
-
 function convertirFormularioEnJson(formularioAEnviar){
     // Fuente: https://www.learnwithjason.dev/blog/get-form-values-as-json/
     const data = new FormData(formularioAEnviar);
     return Object.fromEntries(data.entries());
+}
+
+function crearError(grupo, error){
+    if(error) {
+        let parrafoError = document.createElement("p");
+        let texto = document.createTextNode(error);
+        parrafoError.append(texto);
+        parrafoError.classList.add("error");
+        grupo.appendChild(parrafoError);
+    }
+}
+
+function limpiaErrores() {
+    // Por alguna razon, hay que clonar la lista para que no se 
+    // lie con los otros errores que se crearan despues.
+    let errores = [...document.getElementsByClassName("error")];
+    for (const elementoActual of errores) {
+        elementoActual.remove(); 
+    }
+}
+
+function formularioEditado(rowId) {
+    console.log(rowId);
+    let row = document.getElementById(rowId);
+    row.style.border=" 2px solid red";
+}
+
+function limpiarFormularioEditado(rowId) {
+    console.log(rowId);
+    let row = document.getElementById(rowId);
+    row.style.border="unset";
 }

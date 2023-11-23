@@ -18,6 +18,11 @@ tr td input {
     max-width: 12em;
 }
 
+.contenido {
+    max-height: 2em;
+    overflow: hidden;
+}
+
 table {
     width: 100%;
     border-collapse: collapse; 
@@ -129,4 +134,11 @@ input, textarea, select, datalist {
 
 .conjunto input {
     width: 24em;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+    margin-top: 4px;
+    font-size: small;
 }

@@ -33,8 +33,8 @@ window.addEventListener("load", function() {
 
     function pintarRecurso(recurso) {    
         let contenido = this.document.getElementById('contenido');
-        let width = screen.width;
-        let height = screen.height;
+        let width = window.innerWidth;
+        let height = window.innerHeight;
         contenido.innerHTML = '';
         switch(recurso.tipo) {
             case 1: // Web
@@ -43,18 +43,18 @@ window.addEventListener("load", function() {
             case 2: // Imagen 
                 let img = document.createElement('img');
                 img.src = document.location.origin + recurso.contenido;
-                img.style.maxWidth = width
-                img.style.maxHeight = height
+                img.width = width
+                img.height = height
                 contenido.appendChild(img);
                 break;
             case 3: // Video
                 let video = document.createElement('video');
                 video.src = document.location.origin + recurso.contenido;
                 video.type = recurso.formato;
-                video.style.maxWidth = width
-                video.style.maxHeight = height
-                video.setAttribute('autoplay', '');
+                video.width = width
+                video.height = height
                 contenido.appendChild(video);
+                video.play();
                 break;
         }
     }
