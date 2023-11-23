@@ -1,9 +1,8 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/visualizador/servidor/helpers/validator.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/visualizador/servidor/repository/recursoRepository.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/visualizador/servidor/repository/perfilRepository.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/visualizador/servidor/entities/recurso.php');
-
+require_once($_SERVER['DOCUMENT_ROOT'].'/visualizador/servidor/helpers/sessionHelper.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/visualizador/servidor/components/dispatcher.php');
 
 if ($_SERVER['REQUEST_METHOD']=='POST') {
     // Crear
@@ -151,6 +150,12 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
     return;
 
 } elseif ($_SERVER['REQUEST_METHOD']=='GET') {
+    // Se ejecuta varias veces por minuto mientras esten las pantallas encendidas
+    // Es un sistema que nos permitira hacer una comprobacion continua de cuales
+    // son los recursos caducados y eliminarlos
+    // Limpieza de recursos caducados
+    eliminarRecursoCaducado();
+
     // Listar o Obtener para visualizacion
     if(isset($_GET['all'])) {
         $recursos = obtenerRecursos();
@@ -158,31 +163,13 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         return;
     }
 
-    // Se ejecuta varias veces por minuto mientras esten las pantallas encendidas
-    // Es un sistema que nos permitira hacer una comprobacion continua de cuales
-    // son los recursos caducados y eliminarlos
     if(isset($_GET['perfil'])) {
-        //Limpieza de recursos caducados
-        eliminarRecursoCaducado();
-        // Resto de la funcnionalidad
         $perfil = $_GET['perfil'];
-        $perfilId = obtenerPerfilIdPorNombre($perfil);
-
-        // obtener todos los recursos para ese perfil
-        $recursos = obtenerRecursoPorPerfil($perfilId);
-        // elegir uno aleatoriamente teniendo en cuenta las prioridades como probabiliddad de eleccion
-        $recursosDuplicados = array();
-        foreach($recursos as $recurso) {
-            for ($i = 0; $i < $recurso->get_prioridad(); $i++) {
-                $recursosDuplicados[] = $recurso;
-            }
-        }
-
-        $posAleatoria = rand(0,sizeof($recursosDuplicados)-1);
-        
-        // devolver por json el recurso elegido
-        echo $recursosDuplicados[$posAleatoria]->to_json();
-        return ;
+        // Obtenemos identificador del cliente/TV
+        $clienteId = SessionHelper::obtenerIdentificadorDelcliente();
+        $recursoElegido = Dispatcher::next($clienteId, $perfil);
+        echo $recursoElegido->to_json();
+        return;
     }
 
 
@@ -200,5 +187,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
     echo json_encode($respuesta);
     return;
 }
+
 
 ?>
